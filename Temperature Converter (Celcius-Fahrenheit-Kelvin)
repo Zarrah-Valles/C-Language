@@ -1,0 +1,107 @@
+#include <stdio.h>
+
+#define MAX_HISTORY 5
+
+int main() {
+    int choice;
+    float temp, result;
+    char history[MAX_HISTORY][50];
+    int historyCount = 0;
+
+    while (1) {
+        printf("\n=============================\n");
+        printf("      TEMPERATURE CONVERTER\n");
+        printf("=============================\n");
+        printf("1. Celsius to Fahrenheit\n");
+        printf("2. Fahrenheit to Celsius\n");
+        printf("3. Celsius to Kelvin\n");
+        printf("4. Kelvin to Celsius\n");
+        printf("5. Fahrenheit to Kelvin\n");
+        printf("6. Kelvin to Fahrenheit\n");
+        printf("7. Show Conversion History\n");
+        printf("8. Exit\n");
+        printf("-----------------------------\n");
+        printf("Choose an option (1-8): ");
+
+       
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Numbers only.\n");
+            while (getchar() != '\n'); 
+            continue;
+        }
+
+        if (choice == 8) {
+            printf("Exiting Temperature Converter. Goodbye!\n");
+            break;
+        }
+
+        if (choice == 7) {
+            printf("\n===== Conversion History =====\n");
+            if (historyCount == 0) {
+                printf("No conversions yet.\n");
+            } else {
+                int start = historyCount > MAX_HISTORY ? historyCount - MAX_HISTORY : 0;
+                for (int i = start; i < historyCount; i++) {
+                    printf("%s\n", history[i % MAX_HISTORY]);
+                }
+            }
+            continue;
+        }
+
+        printf("Enter temperature: ");
+        if (scanf("%f", &temp) != 1) {
+            printf("Invalid input! Numbers only.\n");
+            while (getchar() != '\n');
+            continue;
+        }
+
+        switch (choice) {
+            case 1: 
+                result = (temp * 9 / 5) + 32;
+                printf("%.2f°C = %.2f°F\n", temp, result);
+                snprintf(history[historyCount % MAX_HISTORY], 50, "%.2f°C -> %.2f°F", temp, result);
+                historyCount++;
+                break;
+
+            case 2: 
+                result = (temp - 32) * 5 / 9;
+                printf("%.2f°F = %.2f°C\n", temp, result);
+                snprintf(history[historyCount % MAX_HISTORY], 50, "%.2f°F -> %.2f°C", temp, result);
+                historyCount++;
+                break;
+
+            case 3: 
+                result = temp + 273.15;
+                printf("%.2f°C = %.2fK\n", temp, result);
+                snprintf(history[historyCount % MAX_HISTORY], 50, "%.2f°C -> %.2fK", temp, result);
+                historyCount++;
+                break;
+
+            case 4: 
+                result = temp - 273.15;
+                printf("%.2fK = %.2f°C\n", temp, result);
+                snprintf(history[historyCount % MAX_HISTORY], 50, "%.2fK -> %.2f°C", temp, result);
+                historyCount++;
+                break;
+
+            case 5: 
+                result = (temp - 32) * 5 / 9 + 273.15;
+                printf("%.2f°F = %.2fK\n", temp, result);
+                snprintf(history[historyCount % MAX_HISTORY], 50, "%.2f°F -> %.2fK", temp, result);
+                historyCount++;
+                break;
+
+            case 6: 
+                result = (temp - 273.15) * 9 / 5 + 32;
+                printf("%.2fK = %.2f°F\n", temp, result);
+                snprintf(history[historyCount % MAX_HISTORY], 50, "%.2fK -> %.2f°F", temp, result);
+                historyCount++;
+                break;
+
+            default:
+                printf("Invalid choice! Please select 1-8.\n");
+        }
+    }
+
+    return 0;
+}
